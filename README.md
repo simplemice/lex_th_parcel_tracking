@@ -4,7 +4,7 @@ Track **LEX TH (Lazada Express Thailand)** parcels in Home Assistant. Add a trac
 
 ![Home Assistant](https://img.shields.io/badge/Home%20Assistant-custom%20integration-41BDF5?logo=home-assistant&logoColor=white)
 ![IoT class](https://img.shields.io/badge/iot__class-cloud__polling-blue)
-![Version](https://img.shields.io/badge/version-0.1.0-green)
+![Version](https://img.shields.io/badge/version-0.2.0-green)
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/simplemice/LEX-TH-Parcel-Tracking/main/screenshots/lex_th.png" alt="LEX TH Parcel Tracking sensor in Home Assistant" width="600">
