@@ -26,6 +26,9 @@ class Tests(unittest.TestCase):
         for raw, want in [
             ("domestic_ib_success_in_sort_center", "in_transit"),
             ("domestic_package_stationed_in", "in_transit"),
+            ("package_ready_to_be_shipped", "ready_to_ship"),
+            ("domestic_last_mile_customer_station_inbound", "awaiting_collection"),
+            ("domestic_package_returned", "problem"),
             ("domestic_pickup/sign_in_success", "picked_up"),
             ("delivery_success", "delivered"),
             ("out_for_delivery", "out_for_delivery"),
@@ -68,6 +71,23 @@ class Tests(unittest.TestCase):
         self.assertIn("คัดแยก", describe_status("domestic_ib_success_in_sort_center", "in_transit", "th"))
         self.assertEqual(describe_status("delivery_success", "delivered", "en"), "Package has been delivered")
         self.assertEqual(describe_status(None, "unknown", "th"), "มีการอัปเดตสถานะพัสดุ")
+
+    def test_all_official_codes(self):
+        import json
+        from custom_components.lex_th.const import RAW_STATUS, STATES
+        self.assertEqual(len(RAW_STATUS), 43)
+        root = Path(__file__).resolve().parents[1] / "custom_components" / "lex_th" / "translations"
+        for lang in ("en", "th"):
+            states = json.loads((root / f"{lang}.json").read_text(encoding="utf-8"))["entity"]["sensor"]["status"]["state"]
+            self.assertEqual(set(states), set(STATES))
+        for code, (state, en, th) in RAW_STATUS.items():
+            self.assertIn(state, STATES, code)
+            self.assertEqual(normalize_status(code), state, code)
+            self.assertTrue(en and th, code)
+
+    def test_unknown_shows_raw(self):
+        from custom_components.lex_th.const import describe_status
+        self.assertEqual(describe_status("zzz", "unknown", "en"), "Tracking update received (zzz)")
 
     def test_regex(self):
         self.assertTrue(TRACKING_NUMBER_RE.match("LEXPU0719633081"))

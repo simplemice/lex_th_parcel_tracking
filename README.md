@@ -82,9 +82,11 @@ The state is one of these fixed values, so it is safe to use in automations:
 | State | Meaning |
 | --- | --- |
 | `not_found` | LEX TH has no data for this number (yet). Not treated as an error. |
+| `ready_to_ship` | Seller prepared the parcel; LEX TH has not picked it up yet. |
 | `picked_up` | Parcel was picked up by LEX TH. |
 | `in_transit` | Parcel is moving between hubs or sorting centers. |
 | `out_for_delivery` | Parcel is out with a courier. |
+| `awaiting_collection` | Parcel is waiting at a pickup point / locker for you to collect. |
 | `delivered` | Parcel was delivered. |
 | `problem` | Failed delivery, return, cancellation, damage or similar. |
 | `unknown` | Status code not recognized. Check `raw_status`. |
@@ -172,7 +174,7 @@ content: >
 ## Limitations
 
 - **Unofficial endpoint.** The lex.th page loads bot-protection scripts. Plain requests work today, but LEX TH may block them later. If that happens the sensor goes `unavailable` and the log shows the HTTP error.
-- **Only two raw status codes are verified:** `domestic_ib_success_in_sort_center` (→ `in_transit`) and `domestic_pickup/sign_in_success` (→ `picked_up`). Codes for out for delivery, delivered and problems are best-guess matches and may need adjusting. If you see `unknown`, check `raw_status` and open an issue with the code.
+- **Status codes:** all 43 codes used by the lex.th tracking page are mapped exactly (see `RAW_STATUS` in `const.py`). Codes LEX adds later fall back to keyword matching; if you see `unknown`, the Details sensor shows the raw code, please open an issue with it.
 - A newly created tracking number may show `not_found` until LEX TH has indexed it.
 - Parcels are not removed automatically after delivery. Delete the entry yourself.
 - Polling interval is fixed at 30 minutes.
