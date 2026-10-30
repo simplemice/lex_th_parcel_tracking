@@ -67,6 +67,10 @@ RAW_DESCRIPTIONS = {
         "en": "Package is being sorted and will soon head to the delivery facility",
         "th": "พัสดุอยู่ระหว่างการคัดแยก และจะถูกส่งต่อไปยังศูนย์กระจายสินค้าปลายทางเร็วๆ นี้",
     },
+    "domestic_package_stationed_in": {
+        "en": "Package has arrived at the delivery facility and will be out for delivery soon",
+        "th": "พัสดุถึงศูนย์กระจายสินค้าปลายทางแล้ว และจะถูกนำส่งเร็วๆ นี้",
+    },
     "domestic_pickup/sign_in_success": {
         "en": "Package has been picked up and received by LEX TH",
         "th": "LEX TH รับพัสดุเรียบร้อยแล้ว",
@@ -104,13 +108,13 @@ def describe_status(raw: str | None, state: str, language: str) -> str:
     return STATE_DESCRIPTIONS[language][state]
 
 
-# Only `domestic_ib_success_in_sort_center` and `domestic_pickup/sign_in_success`
-# are verified. Everything else is a best-effort guess; the raw status is always
+# Only `domestic_ib_success_in_sort_center`, `domestic_package_stationed_in` and
+# `domestic_pickup/sign_in_success` are verified. Everything else is a best-effort guess; the raw status is always
 # exposed as an attribute. Order matters: pickup must win over "success"/"sign".
 _PROBLEM_TOKENS = ("fail", "exception", "return", "reject", "lost", "damage", "cancel")
 _OUT_FOR_DELIVERY_TOKENS = ("out_for_delivery", "delivering", "delivery_start", "on_delivery")
 _DELIVERED_TOKENS = ("delivered", "delivery_success", "sign_success", "signed", "sign_in_success")
-_IN_TRANSIT_TOKENS = ("sort_center", "transit", "linehaul", "arrive", "depart", "dispatch", "hub", "_ib_", "_ob_")
+_IN_TRANSIT_TOKENS = ("sort_center", "stationed", "transit", "linehaul", "arrive", "depart", "dispatch", "hub", "_ib_", "_ob_")
 
 
 def normalize_status(raw: str | None) -> str:

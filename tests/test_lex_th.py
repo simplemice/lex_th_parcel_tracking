@@ -25,6 +25,7 @@ class Tests(unittest.TestCase):
     def test_normalize(self):
         for raw, want in [
             ("domestic_ib_success_in_sort_center", "in_transit"),
+            ("domestic_package_stationed_in", "in_transit"),
             ("domestic_pickup/sign_in_success", "picked_up"),
             ("delivery_success", "delivered"),
             ("out_for_delivery", "out_for_delivery"),
